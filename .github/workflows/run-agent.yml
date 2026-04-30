@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
+      - uses: actions/checkout@v4   # 升级到最新版本
       - name: 安装Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5   # 升级到最新版本
         with:
           python-version: '3.11'
 
