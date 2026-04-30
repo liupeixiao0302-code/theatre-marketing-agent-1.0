@@ -6,10 +6,10 @@ import requests
 from multi_source_fetcher import fetch_all_sources
 
 # 获取 secret 的钉钉机器人的加签密钥
-DINGTALK_SECRET = "your_dingtalk_secret"  # 填入你的钉钉 secret
+DINGTALK_SECRET = "SEC3b4d3cfec0a727e2fa7e990cb1357548fba59ad233652134635cb6a012a40cf2"  # 填入你的钉钉 secret
 
-DEEPSEEK_API_KEY = "your_deepseek_api_key"  # 填入 DeepSeek API Key
-DINGTALK_WEBHOOK = "your_dingtalk_webhook"  # 填入钉钉 Webhook
+DEEPSEEK_API_KEY = "sk-f5fe4cd05f9343acb3b40bf19d0ce1b7"  # 填入 DeepSeek API Key
+DINGTALK_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=6106fe508b95ce645cf747db2f44060c987c755cb3edd5bbfdc346d51be3dc52"  # 填入钉钉 Webhook
 
 # ===== 生成加签 =====
 def generate_sign(timestamp):
