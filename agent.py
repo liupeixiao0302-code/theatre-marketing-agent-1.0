@@ -25,7 +25,8 @@ def generate_sign(timestamp):
 
 # ===== 调用 DeepSeek =====
 def generate_marketing_report(public_opinion):
-    prompt = f"""
+    try:
+        prompt = f"""
 你是顶级演出宣发总监，擅长从海量舆情中提炼重点。
 
 下面是从百度新闻、微博、B站、豆瓣抓取的原始网页内容。
@@ -52,21 +53,42 @@ def generate_marketing_report(public_opinion):
 全网原始数据：
 {public_opinion}
 """
-    url = "https://api.deepseek.com/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "model": "deepseek-chat",
-        "messages": [
-            {"role": "user", "content": prompt}
-        ],
-        "temperature": 0.7
-    }
-    response = requests.post(url, headers=headers, json=data)
-    result = response.json()
-    return result["choices"][0]["message"]["content"]
+        url = "https://api.deepseek.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "model": "deepseek-chat",
+            "messages": [
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.7
+        }
+        response = requests.post(url, headers=headers, json=data)
+
+        # 输出完整的 API 返回数据
+        print("DeepSeek API 响应：", response.text)
+
+        # 确保响应没有错误
+        response.raise_for_status()  # 如果响应码不是 2xx 会抛出异常
+
+        result = response.json()
+
+        # 检查返回的 result 中是否有 choices 键
+        if "choices" not in result:
+            print("警告: 'choices' 键不存在，API 返回格式不符合预期。")
+            print("完整返回：", result)
+            return None
+
+        return result["choices"][0]["message"]["content"]
+
+    except requests.exceptions.RequestException as e:
+        print(f"DeepSeek 请求失败: {e}")
+        raise
+    except Exception as e:
+        print(f"生成报告失败: {e}")
+        raise
 
 # ===== 发送钉钉 =====
 def send_to_dingtalk(text):
